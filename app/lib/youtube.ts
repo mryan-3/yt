@@ -108,8 +108,6 @@ class YouTubeClient {
     Cookies.remove('youtube_refresh_token');
   }
 
-
-
   // Convert Spotify playlist to YouTube Music
   async convertSpotifyPlaylist(
     playlistData: PlaylistData,
@@ -157,6 +155,43 @@ class YouTubeClient {
   // Get playlist URL
   getPlaylistUrl(playlistId: string): string {
     return `https://music.youtube.com/playlist?list=${playlistId}`;
+  }
+
+  // Get YouTube playlist data
+  async getPlaylist(playlistId: string): Promise<PlaylistData> {
+    if (!this.isAuthenticated()) {
+      throw new Error('User not authenticated with YouTube');
+    }
+
+    try {
+      const accessToken = Cookies.get('youtube_access_token');
+      
+      if (!accessToken) {
+        throw new Error('Access token not found');
+      }
+
+      const response = await fetch('/api/youtube/playlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          playlistId,
+          accessToken
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch YouTube playlist');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error fetching YouTube playlist:', error);
+      throw new Error('Failed to fetch playlist from YouTube');
+    }
   }
 }
 

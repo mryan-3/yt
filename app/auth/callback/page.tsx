@@ -7,6 +7,7 @@ import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 export default function AuthCallback() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
+  const [platform, setPlatform] = useState<string>('');
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -14,10 +15,15 @@ export default function AuthCallback() {
     const handleCallback = async () => {
       const code = searchParams.get('code');
       const error = searchParams.get('error');
+      const state = searchParams.get('state');
+
+      // Determine platform from state parameter
+      const authPlatform = state === 'spotify' ? 'Spotify' : 'YouTube Music';
+      setPlatform(authPlatform);
 
       if (error) {
         setStatus('error');
-        setMessage('Authentication was cancelled or failed');
+        setMessage(`Authentication was cancelled or failed for ${authPlatform}`);
         return;
       }
 
@@ -28,10 +34,17 @@ export default function AuthCallback() {
       }
 
       try {
-        // Store the auth code in localStorage for the main app to use
+        if (state === 'spotify') {
+          // Store the auth code for Spotify
+          localStorage.setItem('spotify_auth_code', code);
+          setStatus('success');
+          setMessage('Successfully authenticated with Spotify!');
+        } else {
+          // Default to YouTube Music
         localStorage.setItem('youtube_auth_code', code);
         setStatus('success');
         setMessage('Successfully authenticated with YouTube Music!');
+        }
         
         // Redirect back to main app after 2 seconds
         setTimeout(() => {
@@ -56,7 +69,7 @@ export default function AuthCallback() {
               Processing Authentication
             </h2>
             <p className="text-gray-600">
-              Please wait while we complete your YouTube Music authentication...
+              Please wait while we complete your {platform} authentication...
             </p>
           </>
         )}

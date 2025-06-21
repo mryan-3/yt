@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 interface SpotifyTrack {
   name: string;
   artists: Array<{ name: string }>;
@@ -41,6 +43,75 @@ class SpotifyClient {
     // For demo purposes, we'll use public API approach
     this.clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID || '';
     this.clientSecret = process.env.SPOTIFY_CLIENT_SECRET || '';
+  }
+
+  // Check if user is authenticated with Spotify
+  isAuthenticated(): boolean {
+    return !!Cookies.get('spotify_access_token');
+  }
+
+  // Logout - clear tokens
+  logout(): void {
+    Cookies.remove('spotify_access_token');
+    Cookies.remove('spotify_refresh_token');
+  }
+
+  // Generate OAuth URL for user authentication
+  async getAuthUrl(): Promise<string> {
+    try {
+      const response = await fetch('/api/spotify/auth');
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get auth URL');
+      }
+      
+      return data.authUrl;
+    } catch (error) {
+      console.error('Error getting auth URL:', error);
+      throw new Error('Failed to get auth URL');
+    }
+  }
+
+  // Exchange authorization code for tokens
+  async getTokens(code: string): Promise<any> {
+    try {
+      const response = await fetch('/api/spotify/auth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to get tokens');
+      }
+
+      const { tokens } = data;
+      
+      // Store tokens in cookies (secure, httpOnly in production)
+      Cookies.set('spotify_access_token', tokens.access_token!, {
+        expires: 1, // 1 day
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+      });
+
+      if (tokens.refresh_token) {
+        Cookies.set('spotify_refresh_token', tokens.refresh_token, {
+          expires: 30, // 30 days
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict'
+        });
+      }
+
+      return tokens;
+    } catch (error) {
+      console.error('Error getting tokens:', error);
+      throw new Error('Failed to authenticate with Spotify');
+    }
   }
 
   async getAccessToken(): Promise<string> {
@@ -105,6 +176,55 @@ class SpotifyClient {
       console.error('Failed to fetch Spotify playlist:', error);
       throw new Error('Failed to fetch playlist from Spotify');
     }
+  }
+
+  // Convert YouTube playlist to Spotify
+  async convertYouTubePlaylist(
+    playlistData: PlaylistData,
+    onProgress?: (current: number, total: number, trackTitle: string) => void
+  ): Promise<{ playlistId: string; addedTracks: number; failedTracks: string[] }> {
+    if (!this.isAuthenticated()) {
+      throw new Error('User not authenticated with Spotify');
+    }
+
+    try {
+      const accessToken = Cookies.get('spotify_access_token');
+      
+      if (!accessToken) {
+        throw new Error('Access token not found');
+      }
+
+      const response = await fetch('/api/spotify/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          playlistData,
+          accessToken
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to convert playlist');
+      }
+
+      return {
+        playlistId: data.playlistId,
+        addedTracks: data.addedTracks,
+        failedTracks: data.failedTracks
+      };
+    } catch (error) {
+      console.error('Error converting playlist:', error);
+      throw new Error('Failed to convert playlist to Spotify');
+    }
+  }
+
+  // Get playlist URL
+  getPlaylistUrl(playlistId: string): string {
+    return `https://open.spotify.com/playlist/${playlistId}`;
   }
 
   private formatDuration(durationMs: number): string {
