@@ -1,0 +1,294 @@
+{
+    "project": {
+      "name": "Musical DNA Transfer",
+      "description": "Sci-fi playlist converter with molecular music transfer visualization",
+      "framework": "Next.js 14",
+      "theme": "Futuristic Music Laboratory"
+    },
+    
+    "design_system": {
+      "colors": {
+        "primary": {
+          "background": "#0a0a0a",
+          "surface": "#1a1a1a",
+          "accent": "#2a2a2a"
+        },
+        "spotify": {
+          "primary": "#1DB954",
+          "glow": "#1DB954",
+          "accent": "#00FFFF",
+          "particles": "#1DB95420"
+        },
+        "youtube_music": {
+          "primary": "#FF0000",
+          "glow": "#FF0000",
+          "accent": "#FF6600",
+          "particles": "#FF000020"
+        },
+        "neutral": {
+          "white": "#E8E8E8",
+          "gray": "#888888",
+          "silver": "#C0C0C0"
+        },
+        "energy": {
+          "beam": "#00FFFF",
+          "spark": "#FFFFFF",
+          "dna": "#00FF88"
+        },
+        "genres": {
+          "rock": "#FF6B35",
+          "pop": "#FF69B4",
+          "hip_hop": "#9966CC",
+          "electronic": "#00BFFF",
+          "jazz": "#DAA520",
+          "classical": "#8B4513",
+          "country": "#228B22",
+          "default": "#E8E8E8"
+        }
+      },
+      
+      "typography": {
+        "fonts": {
+          "heading": "Orbitron",
+          "body": "Inter",
+          "mono": "JetBrains Mono"
+        },
+        "sizes": {
+          "h1": "2.5rem",
+          "h2": "2rem",
+          "h3": "1.5rem",
+          "body": "1rem",
+          "small": "0.875rem",
+          "caption": "0.75rem"
+        },
+        "weights": {
+          "light": 300,
+          "normal": 400,
+          "medium": 500,
+          "bold": 700,
+          "black": 900
+        }
+      },
+      
+      "spacing": {
+        "xs": "0.25rem",
+        "sm": "0.5rem",
+        "md": "1rem",
+        "lg": "1.5rem",
+        "xl": "2rem",
+        "2xl": "3rem",
+        "3xl": "4rem"
+      },
+      
+      "shadows": {
+        "platform": "0 20px 60px rgba(29, 185, 84, 0.3)",
+        "orb": "0 5px 15px rgba(0, 255, 255, 0.2)",
+        "beam": "0 0 30px rgba(0, 255, 255, 0.5)"
+      }
+    },
+    
+    "components": {
+      "platform_pods": {
+        "dimensions": {
+          "desktop": {
+            "width": "300px",
+            "height": "300px"
+          },
+          "mobile": {
+            "width": "200px",
+            "height": "200px"
+          }
+        },
+        "animations": {
+          "float": {
+            "duration": "4s",
+            "easing": "ease-in-out",
+            "amplitude": "20px"
+          },
+          "glow_pulse": {
+            "duration": "2s",
+            "easing": "cubic-bezier(0.4, 0, 0.6, 1)"
+          },
+          "tilt_hover": {
+            "max_rotation": "5deg",
+            "transition": "0.3s ease"
+          }
+        },
+        "particles": {
+          "count": 50,
+          "size_range": [2, 8],
+          "opacity_range": [0.1, 0.6],
+          "speed_range": [0.5, 2]
+        }
+      },
+      
+      "track_orbs": {
+        "sizes": {
+          "small": "40px",
+          "medium": "60px",
+          "large": "80px"
+        },
+        "orbital": {
+          "radius_range": [80, 200],
+          "speed_range": [20, 60],
+          "direction": "clockwise"
+        },
+        "hover_effects": {
+          "scale": 1.2,
+          "glow_intensity": 2,
+          "info_panel_delay": "0.3s"
+        }
+      },
+      
+      "transfer_beam": {
+        "width": "8px",
+        "gradient": "linear-gradient(90deg, #00FFFF, #FFFFFF, #00FFFF)",
+        "animation": {
+          "pulse_duration": "1.5s",
+          "travel_duration": "2s"
+        },
+        "particles": {
+          "count": 20,
+          "size": "4px",
+          "speed": "1s"
+        }
+      },
+      
+      "dna_helix": {
+        "height": "40px",
+        "width": "20px",
+        "spiral_turns": 2,
+        "animation_duration": "1s",
+        "colors": ["#00FF88", "#FFFFFF"]
+      },
+      
+      "input_portals": {
+        "vortex": {
+          "size": "150px",
+          "rotation_speed": "10s",
+          "particle_count": 30
+        },
+        "voice_bubble": {
+          "size": "80px",
+          "pulse_animation": "1.5s"
+        },
+        "qr_scanner": {
+          "frame_size": "200px",
+          "scan_line_speed": "2s"
+        }
+      }
+    },
+    
+    "layouts": {
+      "desktop": {
+        "container_width": "1200px",
+        "platform_spacing": "400px",
+        "header_height": "80px",
+        "footer_height": "60px"
+      },
+      "tablet": {
+        "container_width": "768px",
+        "platform_spacing": "300px",
+        "header_height": "70px"
+      },
+      "mobile": {
+        "container_width": "100%",
+        "platform_layout": "vertical",
+        "platform_spacing": "200px",
+        "header_height": "60px"
+      }
+    },
+    
+    "animations": {
+      "page_transitions": {
+        "fade_in": {
+          "duration": "0.8s",
+          "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+        },
+        "slide_up": {
+          "duration": "0.6s",
+          "distance": "50px"
+        }
+      },
+      "micro_interactions": {
+        "button_hover": {
+          "scale": 1.05,
+          "glow": "0 0 20px currentColor"
+        },
+        "card_hover": {
+          "lift": "10px",
+          "duration": "0.3s"
+        }
+      },
+      "conversion_sequence": [
+        {
+          "step": "scan_tracks",
+          "duration": "2s",
+          "description": "Light ray scans orbiting tracks"
+        },
+        {
+          "step": "dna_extraction",
+          "duration": "1s",
+          "description": "Tracks transform to DNA helixes"
+        },
+        {
+          "step": "beam_transfer",
+          "duration": "3s",
+          "description": "DNA travels through energy beam"
+        },
+        {
+          "step": "materialization",
+          "duration": "1s",
+          "description": "Tracks appear on destination platform"
+        }
+      ]
+    },
+    
+    "responsive_breakpoints": {
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px",
+      "2xl": "1536px"
+    },
+    
+    "performance_targets": {
+      "fps": 60,
+      "animation_budget": "16ms",
+      "bundle_size": "<500KB",
+      "first_contentful_paint": "<2s",
+      "largest_contentful_paint": "<3s"
+    },
+    
+    "accessibility": {
+      "reduced_motion": {
+        "disable_particles": true,
+        "reduce_animations": true,
+        "static_alternatives": true
+      },
+      "color_contrast": {
+        "minimum_ratio": "4.5:1",
+        "enhanced_ratio": "7:1"
+      },
+      "keyboard_navigation": {
+        "focus_indicators": true,
+        "skip_links": true,
+        "tab_order": "logical"
+      }
+    },
+    
+    "audio_design": {
+      "sound_effects": {
+        "track_scan": "electronic_beep.mp3",
+        "transfer_start": "energy_charge.mp3",
+        "transfer_complete": "success_chime.mp3",
+        "error": "error_buzz.mp3",
+        "hover": "subtle_click.mp3"
+      },
+      "volume_levels": {
+        "default": 0.3,
+        "hover": 0.1,
+        "success": 0.5
+      }
+    }
+  }

@@ -1,26 +1,196 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Colors */
+  --bg-primary: #0a0a0a;
+  --bg-surface: #1a1a1a;
+  --bg-accent: #2a2a2a;
+
+  /* Platform Colors */
+  --spotify-primary: #1DB954;
+  --spotify-glow: #1DB954;
+  --spotify-accent: #00FFFF;
+  --spotify-particles: rgba(29, 185, 84, 0.2);
+
+  --youtube-primary: #FF0000;
+  --youtube-glow: #FF0000;
+  --youtube-accent: #FF6600;
+  --youtube-particles: rgba(255, 0, 0, 0.2);
+
+  /* Energy Colors */
+  --energy-beam: #00FFFF;
+  --energy-spark: #FFFFFF;
+  --energy-dna: #00FF88;
+
+  /* Text Colors */
+  --text-primary: #E8E8E8;
+  --text-gray: #888888;
+  --text-silver: #C0C0C0;
+
+  /* Genre Colors */
+  --genre-rock: #FF6B35;
+  --genre-pop: #FF69B4;
+  --genre-hiphop: #9966CC;
+  --genre-electronic: #00BFFF;
+  --genre-jazz: #DAA520;
+  --genre-classical: #8B4513;
+  --genre-country: #228B22;
+  --genre-default: #E8E8E8;
+
+  /* Shadows */
+  --shadow-platform: 0 20px 60px rgba(29, 185, 84, 0.3);
+  --shadow-orb: 0 5px 15px rgba(0, 255, 255, 0.2);
+  --shadow-beam: 0 0 30px rgba(0, 255, 255, 0.5);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-heading: "Orbitron", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Star Field Background */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: twinkle 4s infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Keyframe Animations */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 10px currentColor); }
+  50% { filter: brightness(1.2) drop-shadow(0 0 20px currentColor); }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+}
+
+@keyframes dna-spiral {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+@keyframes beam-pulse {
+  0%, 100% { opacity: 0.6; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+@keyframes particle-float {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-3px); }
+  75% { transform: translateY(-8px) translateX(2px); }
+}
+
+/* Utility Classes */
+.font-heading { font-family: var(--font-heading); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+.glow-spotify {
+  box-shadow: 0 0 20px var(--spotify-glow);
+  filter: drop-shadow(0 0 10px var(--spotify-glow));
+}
+
+.glow-youtube {
+  box-shadow: 0 0 20px var(--youtube-glow);
+  filter: drop-shadow(0 0 10px var(--youtube-glow));
+}
+
+.glow-energy {
+  box-shadow: 0 0 30px var(--energy-beam);
+  filter: drop-shadow(0 0 15px var(--energy-beam));
+}
+
+.text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* Floating Animation */
+.floating {
+  animation: float 4s ease-in-out infinite;
+}
+
+.floating-delayed {
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Particle Container */
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Orb Orbital Animation */
+.orbital-motion {
+  animation: orbit 20s linear infinite;
+}
+
+.orbital-motion-reverse {
+  animation: orbit 25s linear infinite reverse;
+}
+
+/* Responsive breakpoints for animations */
+@media (max-width: 768px) {
+  body::before {
+    background-size: 150px 75px;
+  }
+
+  .floating, .floating-delayed {
+    animation-duration: 6s;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .floating, .floating-delayed, .orbital-motion, .orbital-motion-reverse {
+    animation: none;
+  }
 }

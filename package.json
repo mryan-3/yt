@@ -9,14 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/fiber": "^9.1.2",
+    "@types/three": "^0.177.0",
     "axios": "^1.7.2",
+    "framer-motion": "^12.18.1",
     "google-auth-library": "^10.1.0",
     "googleapis": "^150.0.1",
+    "howler": "^2.2.4",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.454.0",
     "next": "15.3.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-flow": "^1.0.3",
+    "reactflow": "^11.11.4",
+    "three": "^0.177.0",
+    "use-sound": "^5.0.0",
+    "wavesurfer.js": "^7.9.5",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
